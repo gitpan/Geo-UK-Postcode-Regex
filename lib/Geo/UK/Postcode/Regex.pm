@@ -8,7 +8,7 @@ our @EXPORT_OK = qw/ is_valid_pc is_strict_pc is_lax_pc /;
 
 # ABSTRACT: regular expressions for handling British postcodes
 
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.005'; # VERSION
 
 
 ## REGULAR EXPRESSIONS
@@ -246,7 +246,7 @@ Geo::UK::Postcode::Regex - regular expressions for handling British postcodes
 
 =head1 VERSION
 
-version 0.001
+version 0.005
 
 =head1 SYNOPSIS
 

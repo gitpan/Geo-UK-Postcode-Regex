@@ -70,7 +70,7 @@
    "provides" : {
       "Geo::UK::Postcode::Regex" : {
          "file" : "lib/Geo/UK/Postcode/Regex.pm",
-         "version" : "0.001"
+         "version" : "0.005"
       }
    },
    "release_status" : "stable",
@@ -85,7 +85,7 @@
          "web" : "https://github.com/mjemmeson/Geo-UK-Postcode-Regex"
       }
    },
-   "version" : "0.001",
+   "version" : "0.005",
    "x_authority" : "cpan:DAGOLDEN"
 }
 

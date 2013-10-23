@@ -3,7 +3,7 @@ NAME
     postcodes
 
 VERSION
-    version 0.001
+    version 0.005
 
 SYNOPSIS
         use Geo::UK::Postcode::Regex;
