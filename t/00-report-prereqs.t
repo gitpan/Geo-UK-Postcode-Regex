@@ -14,12 +14,10 @@ my @modules = qw(
   Data::Dumper
   Exporter
   ExtUtils::MakeMaker
+  File::Find
   File::ShareDir::Install
-  File::Spec
   File::Spec::Functions
   File::Temp
-  IO::Handle
-  IPC::Open3
   List::Util
   Test::More
   base
