@@ -8,7 +8,7 @@ our @EXPORT_OK = qw/ is_valid_pc is_strict_pc is_lax_pc /;
 
 # ABSTRACT: regular expressions for handling British postcodes
 
-our $VERSION = '0.006'; # VERSION
+our $VERSION = '0.007'; # VERSION
 
 
 ## REGULAR EXPRESSIONS
@@ -16,7 +16,7 @@ our $VERSION = '0.006'; # VERSION
 my $AREA1 = 'ABCDEFGHIJKLMNOPRSTUWYZ';    # [^QVX]
 my $AREA2 = 'ABCDEFGHKLMNOPQRSTUVWXY';    # [^IJZ]
 
-my $SUBDISTRICT1 = 'ABCDEFGHJKSTUW';      # for single letter areas
+my $SUBDISTRICT1 = 'ABCDEFGHJKPSTUW';     # for single letter areas
 my $SUBDISTRICT2 = 'ABEHMNPRVWXY';        # for two letter areas
 
 my $UNIT1 = 'ABDEFGHJLNPQRSTUWXYZ';       # [^CIKMOV]
@@ -239,7 +239,7 @@ sub posttowns_lookup {
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -247,7 +247,7 @@ Geo::UK::Postcode::Regex - regular expressions for handling British postcodes
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 
@@ -484,7 +484,7 @@ L<Form::Validator::UKPostcode>
 =head2 Bugs / Feature Requests
 
 Please report any bugs or feature requests through the issue tracker
-at L<https://github.com/mjemmeson/geo-uk-postcode-regex/issues>.
+at L<https://github.com/mjemmeson/Geo-UK-Postcode-Regex/issues>.
 You will be notified automatically of any progress on your issue.
 
 =head2 Source Code
@@ -492,9 +492,9 @@ You will be notified automatically of any progress on your issue.
 This is open source software.  The code repository is available for
 public review and contribution under the terms of the license.
 
-L<https://github.com/mjemmeson/geo-uk-postcode-regex>
+L<https://github.com/mjemmeson/Geo-UK-Postcode-Regex>
 
-  git clone git://github.com/mjemmeson/geo-uk-postcode-regex.git
+  git clone https://github.com/mjemmeson/Geo-UK-Postcode-Regex.git
 
 =head1 AUTHOR
 

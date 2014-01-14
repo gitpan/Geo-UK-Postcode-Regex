@@ -6,17 +6,15 @@ build_requires:
   Clone: 0
   Data::Dumper: 0
   ExtUtils::MakeMaker: 0
-  File::Find: 0
   File::Spec::Functions: 0
-  File::Temp: 0
   List::Util: 0
   Test::More: 0
   lib: 0
 configure_requires:
-  ExtUtils::MakeMaker: 6.30
+  ExtUtils::MakeMaker: 6.17
   File::ShareDir::Install: 0.03
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.009, CPAN::Meta::Converter version 2.133380'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -33,7 +31,7 @@ no_index:
 provides:
   Geo::UK::Postcode::Regex:
     file: lib/Geo/UK/Postcode/Regex.pm
-    version: 0.006
+    version: 0.007
 requires:
   Exporter: 0
   base: 0
@@ -41,7 +39,8 @@ requires:
   strict: 0
   warnings: 0
 resources:
-  bugtracker: https://github.com/mjemmeson/geo-uk-postcode-regex/issues
-  homepage: https://metacpan.org/release/Geo-UK-Postcode-Regex
-  repository: git://github.com/mjemmeson/geo-uk-postcode-regex.git
-version: 0.006
+  bugtracker: https://github.com/mjemmeson/Geo-UK-Postcode-Regex/issues
+  homepage: https://github.com/mjemmeson/Geo-UK-Postcode-Regex
+  repository: https://github.com/mjemmeson/Geo-UK-Postcode-Regex.git
+version: 0.007
+x_authority: cpan:DAGOLDEN

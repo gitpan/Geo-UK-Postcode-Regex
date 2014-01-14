@@ -1,5 +1,9 @@
 Revision history for Geo-UK-Postcode-Regex
 
+0.007     2014-01-14 16:26:16+00:00 Europe/London
+
+  - BUGFIX: 'P' missing in possible subdistricts for single character areas ('N1P' only use)
+
 0.006     2013-12-20 12:57:44 Europe/London
 
   - Tidy and tests
