@@ -8,7 +8,7 @@ our @EXPORT_OK = qw/ is_valid_pc is_strict_pc is_lax_pc /;
 
 # ABSTRACT: regular expressions for handling British postcodes
 
-our $VERSION = '0.007'; # VERSION
+our $VERSION = '0.008'; # VERSION
 
 
 ## REGULAR EXPRESSIONS
@@ -41,24 +41,33 @@ my %COMPONENTS = (
     },
 );
 
-my %base_regexes = (
-    full          => '^ (%s) (%s)     \s* (%s) (%s)      $',
-    partial       => '^ (%s) (%s) (?: \s* (%s) (%s)? ) ? $',
-    valid_full    => '^ (%s)          \s* (%s) (%s)      $',
-    valid_partial => '^ (%s)      (?: \s* (%s) (%s)? ) ? $',
+my %BASE_REGEXES = (
+    full          => ' %s %s     \s* %s %s      ',
+    partial       => ' %s %s (?: \s* %s %s? ) ? ',
+    valid_full    => ' %s        \s* %s %s      ',
+    valid_partial => ' %s    (?: \s* %s %s? ) ? ',
 );
 
-my %REGEXES;
+my (%REGEXES, %REGEXES_UNANCHORED);
 
 foreach my $type (qw/ strict lax /) {
     my $components = $COMPONENTS{$type};
 
     foreach my $size (qw/ full partial /) {
+
+        # anchored regex, with captures
         my $re = sprintf(
-            $base_regexes{$size},
-            @{$components}{qw/ area district sector unit /}
+            $BASE_REGEXES{$size},
+            map {"($_)"} @{$components}{qw/ area district sector unit /}
         );
-        $REGEXES{$type}->{$size} = qr/$re/x;
+        $REGEXES{$type}->{$size} = qr/^$re$/x;
+
+        # unanchored, with no captures
+        $re = sprintf(
+            $BASE_REGEXES{$size},
+             @{$components}{qw/ area district sector unit /}
+        );
+        $REGEXES_UNANCHORED{$type}->{$size} = qr/$re/x;
     }
 }
 
@@ -68,6 +77,7 @@ my ( %POSTTOWNS, %OUTCODES, %OUTCODES_FOR_REGEX );
 
 sub _outcode_data {
     my $class = shift;
+
     while ( my $line = <DATA> ) {
         next unless $line =~ m/\w/;
         chomp $line;
@@ -105,32 +115,42 @@ sub _outcode_data {
     );
 
     foreach my $size (qw/ full partial /) {
+
+        # anchored regex, with captures
         my $re = sprintf(
-            $base_regexes{"valid_$size"},
+            $BASE_REGEXES{"valid_$size"},
+            map {"($_)"} (
+                $outcodes_re, $COMPONENTS{strict}->{sector},
+                $COMPONENTS{strict}->{unit}
+            )
+        );
+        $REGEXES{valid}->{$size} = qr/^$re$/ix;
+
+        # unanchored regex, with no captures
+        $re = sprintf(
+            $BASE_REGEXES{"valid_$size"},
             $outcodes_re,
             $COMPONENTS{strict}->{sector},
             $COMPONENTS{strict}->{unit}
         );
-        $REGEXES{valid}->{$size} = qr/$re/ix;
+        $REGEXES_UNANCHORED{valid}->{$size} = qr/$re/ix;
     }
 }
 
 
-sub strict_regex { $REGEXES{strict}->{full} }
-sub regex        { $REGEXES{lax}->{full} }
-
-sub valid_regex {
-    shift->_outcode_data() unless %OUTCODES_FOR_REGEX;
-    return $REGEXES{valid}->{full};
-}
-
-
 sub strict_regex_partial { $REGEXES{strict}->{partial} }
+sub strict_regex         { $REGEXES{strict}->{full} }
 sub regex_partial        { $REGEXES{lax}->{partial} }
+sub regex                { $REGEXES{lax}->{full} }
 
 sub valid_regex_partial {
     shift->_outcode_data() unless %OUTCODES_FOR_REGEX;
     return $REGEXES{valid}->{partial};
+}
+
+sub valid_regex {
+    shift->_outcode_data() unless %OUTCODES_FOR_REGEX;
+    return $REGEXES{valid}->{full};
 }
 
 
@@ -145,6 +165,23 @@ sub is_lax_pc {
 }
 
 
+# TODO need to/can do partial?
+
+sub extract {
+    my ( $class, $string, $options ) = @_;
+
+    my $re
+        = $options->{valid}  ? $REGEXES_UNANCHORED{valid}->{full}
+        : $options->{strict} ? $REGEXES_UNANCHORED{strict}->{full}
+        :                      $REGEXES_UNANCHORED{lax}->{full};
+
+    my @extracted = $string =~ m/($re)/g;
+
+    return @extracted;
+}
+
+
+
 sub parse {
     my ( $class, $string, $options ) = @_;
 
@@ -155,14 +192,13 @@ sub parse {
     my ( $area, $district, $sector, $unit )
         = $string =~ $REGEXES{strict}->{$size};
 
-    my $strict = $area ? 1 : 0;
+    my $strict = $area ? 1 : 0;    # matched strict?
 
     unless ($strict) {
         return if $options->{strict};
 
         # try lax regex
-        ( $area, $district, $sector, $unit )
-            = $string =~ $REGEXES{lax}->{$size}
+        ( $area, $district, $sector, $unit ) = $string =~ $REGEXES{lax}->{$size}
             or return;
     }
 
@@ -182,7 +218,7 @@ sub parse {
         sector      => $sector,
         unit        => $unit,
         outcode     => $outcode,
-        incode      => ( $sector || '' ) . ( $unit || '' ),
+        incode      => ( $sector // '' ) . ( $unit || '' ),
         valid_outcode => $outcode_data ? 1 : 0,
         strict        => $strict,
         partial       => $unit         ? 0 : 1,
@@ -247,7 +283,7 @@ Geo::UK::Postcode::Regex - regular expressions for handling British postcodes
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 
@@ -259,18 +295,22 @@ version 0.007
     my $strict_re = Geo::UK::Postcode::Regex->regex_strict;
     my $valid_re  = Geo::UK::Postcode::Regex->valid_regex;
 
+    # matching only
+    if ( $foo =~ $lax_re )    {...}
+    if ( $foo =~ $strict_re ) {...}
+    if ( $foo =~ $valid_re )  {...}
+
+    # matching and using components - see also parse()
     if ( $foo =~ $lax_re ) {
         my ( $area, $district, $sector, $unit ) = ( $1, $2, $3, $4 );
         my $subdistrict = $district =~ s/([A-Z])$// ? $1 : undef;
         ...
     }
-
     if ( $foo =~ $strict_re ) {
         my ( $area, $district, $sector, $unit ) = ( $1, $2, $3, $4 );
         my $subdistrict = $district =~ s/([A-Z])$// ? $1 : undef;
         ...
     }
-
     if ( $foo =~ $valid_re ) {
         my ( $outcode, $sector, $unit ) = ( $1, $2, $3 );
         ...
@@ -319,11 +359,16 @@ version 0.007
     ...->parse( $pc, { partial => 1 } )
 
 
-    ## EXTRACT OUTCODE
+    ## EXTRACT OUTCODE FROM POSTCODE
     my $outcode = Geo::UK::Postcode::Regex->outcode("AB101AA"); # returns 'AB10'
 
     my $outcode = Geo::UK::Postcode::Regex->outcode( $postcode, { valid => 1 } )
         or die "Invalid postcode";
+
+
+    ## EXTRACT POSTCODES FROM TEXT
+    # \%options as per parse, excluding partial
+    my @extracted = Geo::UK::Postcode::Regex->extract( $text, \%options );
 
 
     ## POSTTOWNS
@@ -357,7 +402,7 @@ without whitespace.
 
 =head1 METHODS
 
-=head2 strict_regex, regex, valid_regex
+=head2 regex, strict_regex, valid_regex
 
 Return regular expressions to parse postcodes and capture the constituent
 parts: area, district, sector and unit (or outcode, sector and unit in the
@@ -368,7 +413,7 @@ according to the postcode specifications.
 
 C<valid_regex> checks that the outcode currently exists.
 
-=head2 strict_regex_partial, regex_partial, valid_regex_partial
+=head2 regex_partial, strict_regex_partial, valid_regex_partial
 
 As above, but matches on partial postcodes of just the outcode
 or sector
@@ -378,6 +423,12 @@ or sector
     if (is_valid_pc( "AB1 2CD" ) ) { ... }
 
 Alternative way to access the regexes.
+
+=head2 extract
+
+    my @extracted = Geo::UK::Postcode::Regex->extract( $string, \%options );
+
+Returns a list of full postcodes extracted from a string.
 
 =head2 parse
 

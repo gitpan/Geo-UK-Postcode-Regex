@@ -11,6 +11,7 @@ dist.ini
 lib/Geo/UK/Postcode/Regex.pm
 share/get_pc_districts.pl
 t/00-report-prereqs.t
+t/extract.t
 t/lib/TestGeoUKPostcode.pm
 t/outcode.t
 t/parse.t
