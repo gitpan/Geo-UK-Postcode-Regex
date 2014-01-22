@@ -55,7 +55,9 @@
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "0",
             "Exporter" : "0",
+            "Tie::Hash" : "0",
             "base" : "0",
             "perl" : "5.010",
             "strict" : "0",
@@ -69,7 +71,6 @@
          },
          "requires" : {
             "Clone" : "0",
-            "Data::Dumper" : "0",
             "ExtUtils::MakeMaker" : "0",
             "File::Spec::Functions" : "0",
             "List::Util" : "0",
@@ -81,7 +82,15 @@
    "provides" : {
       "Geo::UK::Postcode::Regex" : {
          "file" : "lib/Geo/UK/Postcode/Regex.pm",
-         "version" : "0.008"
+         "version" : "0.009"
+      },
+      "Geo::UK::Postcode::Regex::Hash" : {
+         "file" : "lib/Geo/UK/Postcode/Regex.pm",
+         "version" : "0.009"
+      },
+      "Geo::UK::Postcode::Regex::Simple" : {
+         "file" : "lib/Geo/UK/Postcode/Regex/Simple.pm",
+         "version" : "0.009"
       }
    },
    "release_status" : "stable",
@@ -96,7 +105,7 @@
          "web" : "https://github.com/mjemmeson/Geo-UK-Postcode-Regex"
       }
    },
-   "version" : "0.008",
+   "version" : "0.009",
    "x_authority" : "cpan:DAGOLDEN"
 }
 

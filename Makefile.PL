@@ -24,21 +24,22 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "Geo::UK::Postcode::Regex",
   "PREREQ_PM" => {
+    "Carp" => 0,
     "Exporter" => 0,
+    "Tie::Hash" => 0,
     "base" => 0,
     "strict" => 0,
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
     "Clone" => 0,
-    "Data::Dumper" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Spec::Functions" => 0,
     "List::Util" => 0,
     "Test::More" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.008",
+  "VERSION" => "0.009",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -46,13 +47,14 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Carp" => 0,
   "Clone" => 0,
-  "Data::Dumper" => 0,
   "Exporter" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec::Functions" => 0,
   "List::Util" => 0,
   "Test::More" => 0,
+  "Tie::Hash" => 0,
   "base" => 0,
   "lib" => 0,
   "strict" => 0,

@@ -14,14 +14,15 @@ use List::Util qw/max/;
 my @modules = qw(
   CPAN::Meta
   CPAN::Meta::Requirements
+  Carp
   Clone
-  Data::Dumper
   Exporter
   ExtUtils::MakeMaker
   File::ShareDir::Install
   File::Spec::Functions
   List::Util
   Test::More
+  Tie::Hash
   base
   lib
   perl

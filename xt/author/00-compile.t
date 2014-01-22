@@ -4,12 +4,13 @@ use warnings;
 
 # this test was generated with Dist::Zilla::Plugin::Test::Compile 2.039
 
-use Test::More  tests => 1 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More  tests => 2 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
 my @module_files = (
-    'Geo/UK/Postcode/Regex.pm'
+    'Geo/UK/Postcode/Regex.pm',
+    'Geo/UK/Postcode/Regex/Simple.pm'
 );
 
 
