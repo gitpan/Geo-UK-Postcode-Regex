@@ -1,5 +1,15 @@
 Revision history for Geo-UK-Postcode-Regex
 
+0.010  2014-01-28 13:48:32 GMT
+
+  [Features]
+  - Case-insensitive matching, and allow options on validate_pc
+
+  [Maintenance]  
+  - POD - methods grouped
+  - Switched to Dist::Milla
+  - moved tied hash to separate file
+
 0.009     2014-01-22 18:20:34+00:00 Europe/London
 
   - debugging regexes
