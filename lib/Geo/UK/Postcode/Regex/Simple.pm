@@ -1,8 +1,6 @@
 package Geo::UK::Postcode::Regex::Simple;
 
-our $VERSION = '0.010';
-
-# ABSTRACT: Simplified interface to Geo::UK::Postcode::Regex
+our $VERSION = '0.011';
 
 use strict;
 use warnings;
@@ -111,7 +109,7 @@ __END__
 
 =head1 NAME
 
-Geo::UK::Postcode::Regex::Simple
+Geo::UK::Postcode::Regex::Simple - Simplified interface to Geo::UK::Postcode::Regex
 
 =head1 SYNOPSIS
 
@@ -126,7 +124,7 @@ Geo::UK::Postcode::Regex::Simple
 
     # Regular expression to match postcodes
     my $re = postcode_re;
-    my ( $area, $district, $sector, $unit ) = "AB10 1AA" =~ re;
+    my ( $area, $district, $sector, $unit ) = "AB10 1AA" =~ $re;
 
     # Get hashref of data parsed from postcode
     my $parsed = parse_pc "AB10 1AA";
