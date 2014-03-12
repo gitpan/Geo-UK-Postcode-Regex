@@ -8,7 +8,7 @@ use Geo::UK::Postcode::Regex::Hash;
 use base 'Exporter';
 our @EXPORT_OK = qw/ is_valid_pc is_strict_pc is_lax_pc %REGEXES /;
 
-our $VERSION = '0.011';
+our $VERSION = '0.012';
 
 =encoding utf-8
 
@@ -77,7 +77,6 @@ See L<Geo::UK::Postcode::Regex::Simple> for an alternative interface.
     #     unit             => 'EB',
     #     outcode          => 'WC1H',
     #     incode           => '9EB',
-    #     valid_outcode    => 1,
     #     valid            => 1,
     #     strict           => 1,
     #     partial          => 0,
@@ -108,7 +107,6 @@ See L<Geo::UK::Postcode::Regex::Simple> for an alternative interface.
     #     unit             => undef,
     #     outcode          => 'AB10',
     #     incode           => undef,
-    #     valid_outcode    => 1,
     #     valid            => 1,
     #     strict           => 1,
     #     partial          => 1,
@@ -127,7 +125,6 @@ See L<Geo::UK::Postcode::Regex::Simple> for an alternative interface.
     #     unit             => undef,
     #     outcode          => 'AB10',
     #     incode           => '1',
-    #     valid_outcode    => 1,
     #     valid            => 1,
     #     strict           => 1,
     #     partial          => 1,
@@ -477,7 +474,6 @@ sub parse {
         strict  => $strict,
         partial => $unit ? 0 : 1,
         valid   => $outcode_data && $strict ? 1 : 0,
-        valid_outcode => $outcode_data ? 1 : 0,
 
         $outcode_data->{non_geographical} ? ( non_geographical => 1 ) : (),
         $outcode eq "BF1"                 ? ( bfpo             => 1 ) : (),

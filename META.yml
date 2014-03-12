@@ -42,6 +42,6 @@ resources:
   bugtracker: https://github.com/mjemmeson/Geo-UK-Postcode-Regex/issues
   homepage: https://github.com/mjemmeson/Geo-UK-Postcode-Regex
   repository: https://github.com/mjemmeson/Geo-UK-Postcode-Regex.git
-version: 0.011
+version: 0.012
 x_contributors:
   - 'Michael Jemmeson <michael.jemmeson@cpan.org>'
