@@ -8,7 +8,7 @@ use Geo::UK::Postcode::Regex::Hash;
 use base 'Exporter';
 our @EXPORT_OK = qw/ is_valid_pc is_strict_pc is_lax_pc %REGEXES /;
 
-our $VERSION = '0.012';
+our $VERSION = '0.013';
 
 =encoding utf-8
 
@@ -295,10 +295,11 @@ sub _outcode_data {
                 join(
                     ' | ',
                     map {
-                              $_ . '['
-                            . join( '', @{ $area_districts{$area}->{$_} } )
-                            . ']'
-                    } sort keys %{ $area_districts{$area} }
+                        sprintf( "%s[%s]",
+                            $_, join( '', @{ $area_districts{$area}->{$_} } ) )
+                        }       #
+                        sort { $a eq ' ' ? 1 : $b eq ' ' ? -1 : $a <=> $b }
+                        keys %{ $area_districts{$area} }
                 )
                 )
         } sort keys %area_districts
@@ -598,6 +599,23 @@ L<CGI::Untaint::uk_postcode>
 L<Form::Validator::UKPostcode>
 
 =back
+
+=head1 SUPPORT
+
+=head2 Bugs / Feature Requests
+
+Please report any bugs or feature requests through the issue tracker
+at L<https://github.com/mjemmeson/geo-uk-postcode-regex/issues>.
+You will be notified automatically of any progress on your issue.
+
+=head2 Source Code
+
+This is open source software.  The code repository is available for
+public review and contribution under the terms of the license.
+
+L<https://github.com/mjemmeson/geo-uk-postcode-regex>
+
+    git clone git://github.com/mjemmeson/geo-uk-postcode-regex.git
 
 =head1 AUTHOR
 
